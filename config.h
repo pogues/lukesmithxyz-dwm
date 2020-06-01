@@ -1,43 +1,83 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappih    = 20;       /* horiz inner gap between windows */
+static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 30;       /* vert outer gap between windows and screen edge */
+static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "monospace:size=14", "JoyPixels:pixelsize=14:antialias=true:autohint=true"  };
 static char dmenufont[]             = "monospace:size=14";
-static char normbgcolor[]           = "#222222";
-static char normbordercolor[]       = "#444444";
-static char normfgcolor[]           = "#bbbbbb";
-static char selfgcolor[]            = "#eeeeee";
-static char selbordercolor[]        = "#770000";
-static char selbgcolor[]            = "#005577";
+static char normbgcolor[]           = "#222222";     // very dark almost black
+static char normbordercolor[]       = "#444444";    // dark grey
+static char normfgcolor[]           = "#bbbbbb";    // medium grey
+static char selfgcolor[]            = "#eeeeee";    // very light grey almost white
+static char selbordercolor[]        = "#770000";    // dark red
+static char selbgcolor[]            = "#005577";   // dark blue
 
 /* colour palette taken from https://coolors.co/5bc0eb-fde74c-9bc53d-e55934-fa7921 */
-static char lightblue[]             = "#5bc0eb";  /* cyan process */
-static char lightyellow[]           = "#fde74c";  /* minion yellow */
-static char lightgreen[]            = "#9bc53d";  /* android green */
-static char lightred[]              = "#e55934";  /* flame */
-static char lightorange[]           = "#fa7921";  /* pumpkin */
-static char black[]                 = "#000000";  /* black */
+//static char lightblue[]             = "#5bc0eb";  /* cyan process */
+//static char lightyellow[]           = "#fde74c";  /* minion yellow */
+//static char lightgreen[]            = "#9bc53d";  /* android green */
+//static char lightred[]              = "#e55934";  /* flame */
+//static char lightorange[]           = "#fa7921";  /* pumpkin */
+//static char black[]                 = "#000000";  /* black */
 
+/* NORD Colour scheme */
+/* Polar night:   nord0..3 going from near black to a middle grey */
+static char nord0[]                 = "#2e3440";
+static char nord1[]                 = "#3b4252";
+static char nord2[]                 = "#434c5e";
+static char nord3[]                 = "#4c566a";
+/* Snow Storm nord4..6 going from light grey to almost white */
+static char nord4[]                 = "#d8dee9";
+static char nord5[]                 = "#e5e9f0";
+//static char nord6[]                 = "#eceff4";
+/* Frost nord7..10   teal / light blue / slightly darker blue / mid blue */
+//static char nord7[]                 = "#8fbcbb";
+static char nord8[]                 = "#88c0d0";
+//static char nord9[]                 = "#81a1c1";
+static char nord10[]                = "#5e81ac";
+/* Aurora    nord11..15   red, orange, yellow, green ,purple */
+static char nord11[]                = "#bf616a";
+static char nord12[]                = "#d08770";
+static char nord13[]                = "#ebcb8b";
+static char nord14[]                = "#a3be8c";
+static char nord15[]                = "#b48ead";
+
+
+static unsigned int NUM_COLORS      = 9;
+enum {
+    SchemeNorm,
+    SchemeSel,
+    SchemeInactive,
+    SchemeBlue,
+    SchemeRed,
+    SchemeOrange,
+    SchemeYellow,
+    SchemeGreen,
+    SchemePurple,
+    SchemeWhite,
+    NUM_COLOR_SCHEMES,   // make sure this is never over 32 or it will clash with ASCII space!
+}; /* color schemes */
 static char *colors[][3] = {
-       /*               fg           bg           border   */
-       [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
-       [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
+       /*                   fg      bg      border   */
+       [SchemeNorm]     = { nord4,  nord1,  nord2 },
+       [SchemeSel]      = { nord1,  nord8,  nord12 },
+       [SchemeInactive] = { nord3,  nord0,  nord1 },
 
-       [SchemeOrange] = { black, lightorange, normbordercolor},
-       [SchemeRed] = { black, lightred, normbordercolor},
-       [SchemeGreen] = { black, lightyellow, normbordercolor},
-       [SchemeYellow] = { black, lightgreen, normbordercolor},
-       [SchemeBlue] = { black, lightblue, normbordercolor},
+       [SchemeBlue]     = { nord10, nord1,  normbordercolor },
+       [SchemeRed]      = { nord11, nord1,  normbordercolor },
+       [SchemeOrange]   = { nord12, nord1,  normbordercolor },
+       [SchemeYellow]   = { nord13, nord1,  normbordercolor },
+       [SchemeGreen]    = { nord14, nord1,  normbordercolor },
+       [SchemeWhite]    = { nord5,  nord1,  normbordercolor },
+       [SchemePurple]   = { nord15, nord1,  normbordercolor },
 };
 
 typedef struct {
