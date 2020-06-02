@@ -86,12 +86,28 @@
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
-enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
-       NetWMFullscreen, NetActiveWindow, NetWMWindowType,
-       NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
+enum { /* EWMH atoms */
+    NetSupported,
+    NetWMName,
+    NetWMState,
+    NetWMCheck,
+    NetWMFullscreen,
+    NetActiveWindow,
+    NetWMWindowType,
+    NetWMWindowTypeDialog,
+    NetClientList,
+    NetLast
+}; 
 enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
-enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
-       ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
+enum {  /* clicks */
+    ClkTagBar,
+    ClkLtSymbol,
+    ClkStatusText,
+    ClkWinTitle,
+    ClkClientWin,
+    ClkRootWin,
+    ClkLast
+};
 
 typedef union {
     int i;
@@ -204,7 +220,7 @@ static void focus(Client *c);
 static void focusin(XEvent *e);
 static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
-static int getdwmblockspid();
+/*static int getdwmblockspid();*/
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
@@ -244,7 +260,7 @@ static void setup(void);
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
 static void sigchld(int unused);
-static void sigdwmblocks(const Arg *arg);
+/*static void sigdwmblocks(const Arg *arg);*/
 static void sighup(int unused);
 static void sigterm(int unused);
 static void spawn(const Arg *arg);
@@ -291,8 +307,8 @@ static pid_t winpid(Window w);
 static const char broken[] = "broken";
 static char stext[256];
 static char rawstext[256];
-static int dwmblockssig;
-pid_t dwmblockspid = 0;
+/*static int dwmblockssig;*/
+/*pid_t dwmblockspid = 0;*/
 static int screen;
 static int sw, sh;           /* X display screen geometry width, height */
 static int bh, blw = 0;      /* bar geometry */
@@ -546,36 +562,18 @@ buttonpress(XEvent *e)
         for (c = m->clients; c; c = c->next)
             occ |= c->tags == 255 ? 0 : c->tags;
         do {
-            /* do not reserve space for vacant tags */
+            /* do not reserve space for vacant tags *   actually do as we show them all
             if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
-                continue;
+                continue; */
             x += TEXTW(tags[i]);
         } while (ev->x >= x && ++i < LENGTH(tags));
+
         if (i < LENGTH(tags)) {
             click = ClkTagBar;
             arg.ui = 1 << i;
         } else if (ev->x < x + blw)
             click = ClkLtSymbol;
-        else if (ev->x > (x = selmon->ww - TEXTW(stext) + lrpad)) {
-            click = ClkStatusText;
-
-            char *text = rawstext;
-            int i = -1;
-            char ch;
-            dwmblockssig = 0;
-            while (text[++i]) {
-                if ((unsigned char)text[i] < ' ') {
-                    ch = text[i];
-                    text[i] = '\0';
-                    x += TEXTW(text) - lrpad;
-                    text[i] = ch;
-                    text += i+1;
-                    i = -1;
-                    if (x >= ev->x) break;
-                    dwmblockssig = ch;
-                }
-            }
-        } else
+        else
             click = ClkWinTitle;
     } else if ((c = wintoclient(ev->window))) {
         focus(c);
@@ -584,9 +582,11 @@ buttonpress(XEvent *e)
         click = ClkClientWin;
     }
     for (i = 0; i < LENGTH(buttons); i++)
-        if (click == buttons[i].click && buttons[i].func && buttons[i].button == ev->button
-        && CLEANMASK(buttons[i].mask) == CLEANMASK(ev->state))
-            buttons[i].func(click == ClkTagBar && buttons[i].arg.i == 0 ? &arg : &buttons[i].arg);
+        if (click == buttons[i].click 
+            && buttons[i].func 
+            && buttons[i].button == ev->button
+            && CLEANMASK(buttons[i].mask) == CLEANMASK(ev->state))
+            buttons[i].func(click == ClkTagBar && buttons[i].arg.i == 0 ? &arg : &buttons[i].arg); 
 }
 
 void
@@ -1031,18 +1031,6 @@ getatomprop(Client *c, Atom prop)
         XFree(p);
     }
     return atom;
-}
-
-int
-getdwmblockspid()
-{
-    char buf[16];
-    FILE *fp = popen("pidof -s dwmblocks", "r");
-    fgets(buf, sizeof(buf), fp);
-    pid_t pid = strtoul(buf, NULL, 10);
-    pclose(fp);
-    dwmblockspid = pid;
-    return pid != 0 ? 0 : -1;
 }
 
 int
@@ -1923,23 +1911,6 @@ sigterm(int unused)
 {
     Arg a = {.i = 0};
     quit(&a);
-}
-
-void
-sigdwmblocks(const Arg *arg)
-{
-    union sigval sv;
-    sv.sival_int = 0 | (dwmblockssig << 8) | arg->i;
-    if (!dwmblockspid)
-        if (getdwmblockspid() == -1)
-            return;
-
-    if (sigqueue(dwmblockspid, SIGUSR1, sv) == -1) {
-        if (errno == ESRCH) {
-            if (!getdwmblockspid())
-                sigqueue(dwmblockspid, SIGUSR1, sv);
-        }
-    }
 }
 
 void
