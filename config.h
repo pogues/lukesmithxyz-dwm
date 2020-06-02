@@ -71,13 +71,13 @@ static char *colors[][3] = {
        [SchemeSel]      = { nord1,  nord8,  nord12 },
        [SchemeInactive] = { nord3,  nord0,  nord1 },
 
-       [SchemeBlue]     = { nord10, nord1,  normbordercolor },
-       [SchemeRed]      = { nord11, nord1,  normbordercolor },
-       [SchemeOrange]   = { nord12, nord1,  normbordercolor },
-       [SchemeYellow]   = { nord13, nord1,  normbordercolor },
-       [SchemeGreen]    = { nord14, nord1,  normbordercolor },
-       [SchemeWhite]    = { nord5,  nord1,  normbordercolor },
-       [SchemePurple]   = { nord15, nord1,  normbordercolor },
+       [SchemeBlue]     = { nord10, nord0,  normbordercolor },
+       [SchemeRed]      = { nord11, nord0,  normbordercolor },
+       [SchemeOrange]   = { nord12, nord0,  normbordercolor },
+       [SchemeYellow]   = { nord13, nord0,  normbordercolor },
+       [SchemeGreen]    = { nord14, nord0,  normbordercolor },
+       [SchemeWhite]    = { nord5,  nord0,  normbordercolor },
+       [SchemePurple]   = { nord15, nord0,  normbordercolor },
 };
 
 typedef struct {
@@ -318,24 +318,24 @@ static Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
     /* click                event mask      button          function        argument */
-    { ClkWinTitle,          0,              Button2,        zoom,           {0} },
+  /*{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
     { ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} },
     { ClkStatusText,        0,              Button2,        sigdwmblocks,   {.i = 2} },
     { ClkStatusText,        0,              Button3,        sigdwmblocks,   {.i = 3} },
     { ClkStatusText,        0,              Button4,        sigdwmblocks,   {.i = 4} },
     { ClkStatusText,        0,              Button5,        sigdwmblocks,   {.i = 5} },
     { ClkStatusText,        ShiftMask,      Button1,        sigdwmblocks,   {.i = 6} },
-    { ClkStatusText,        ShiftMask,      Button3,        spawn,          SHCMD("alacritty -e nvim ~/.local/src/dwmblocks/config.h") },
+    { ClkStatusText,        ShiftMask,      Button3,        spawn,          SHCMD("alacritty -e nvim ~/.local/src/dwmblocks/config.h") }, */
     { ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
     { ClkClientWin,         MODKEY,         Button2,        defaultgaps,    {0} },
     { ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
-    { ClkClientWin,        MODKEY,        Button4,    incrgaps,    {.i = +1} },
-    { ClkClientWin,        MODKEY,        Button5,    incrgaps,    {.i = -1} },
+    { ClkClientWin,         MODKEY,         Button4,        incrgaps,       {.i = +1} },
+    { ClkClientWin,         MODKEY,         Button5,        incrgaps,       {.i = -1} },
     { ClkTagBar,            0,              Button1,        view,           {0} },
     { ClkTagBar,            0,              Button3,        toggleview,     {0} },
     { ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
     { ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
-    { ClkTagBar,        0,        Button4,    shiftview,    {.i = -1} },
-    { ClkTagBar,        0,        Button5,    shiftview,    {.i = 1} },
-    { ClkRootWin,        0,        Button2,    togglebar,    {0} },
+    { ClkTagBar,            0,              Button4,        shiftview,      {.i = -1} },
+    { ClkTagBar,            0,              Button5,        shiftview,      {.i = 1} },
+    { ClkRootWin,           0,              Button2,        togglebar,      {0} },
 };
