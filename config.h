@@ -51,7 +51,6 @@ static char nord14[]                = "#a3be8c";
 static char nord15[]                = "#b48ead";
 
 
-static unsigned int NUM_COLORS      = 9;
 enum {
     SchemeNorm,
     SchemeSel,

@@ -206,7 +206,7 @@ static void clientmessage(XEvent *e);
 static void configure(Client *c);
 static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
-static void copyvalidchars(char *text, char *rawtext);
+static void copyvalidchars(char *text, char *rawtext, int includecolorcodes);
 static Monitor *createmon(void);
 static void destroynotify(XEvent *e);
 static void detach(Client *c);
@@ -760,14 +760,14 @@ configurerequest(XEvent *e)
 }
 
 void
-copyvalidchars(char *text, char *rawtext)
+copyvalidchars(char *text, char *rawtext, int includecolorcodes)
 {
     int i = -1, j = 0;
 
     while(rawtext[++i]) {
         unsigned char rt = (unsigned char)rawtext[i];
         /* space is the first ascii character, but we also want the color codes */
-        if (rt >= ' ' || (rt > 0 && rt <= NUM_COLORS) ) {
+        if (rt >= ' ' || (includecolorcodes && (rt > 0 && rt <= NUM_COLOR_SCHEMES)) ) {
             text[j++] = rawtext[i];
         }
     }
@@ -862,8 +862,10 @@ drawbar(Monitor *m)
     /* draw status first so it can be overdrawn by tags later */
     if (m == selmon) { /* status is only drawn on selected monitor */
         drw_setscheme(drw, scheme[SchemeNorm]);
-        sw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
-        /* drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0); */
+        /* copy out the printable characters only as we need that for length */
+        char printable_text[256];
+        copyvalidchars(printable_text, stext, 0);
+        sw = TEXTW(printable_text) - lrpad + 2; /* 2px right padding */
         /* below is an attempt to get colored text in the status bar... */
         while (1) {
             if ((unsigned int)*ts > LENGTH(colors)) { ts++; continue ; }
@@ -2298,7 +2300,7 @@ updatestatus(void)
     if (!gettextprop(root, XA_WM_NAME, rawstext, sizeof(rawstext)))
         strcpy(stext, "dwm-"VERSION);
     else
-        copyvalidchars(stext, rawstext);
+        copyvalidchars(stext, rawstext, 1);
     drawbar(selmon);
 }
 
