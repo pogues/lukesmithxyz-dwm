@@ -13,20 +13,6 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "monospace:size=14", "JoyPixels:pixelsize=14:antialias=true:autohint=true"  };
 static char dmenufont[]             = "monospace:size=14";
-static char normbgcolor[]           = "#222222";     // very dark almost black
-static char normbordercolor[]       = "#444444";    // dark grey
-static char normfgcolor[]           = "#bbbbbb";    // medium grey
-static char selfgcolor[]            = "#eeeeee";    // very light grey almost white
-static char selbordercolor[]        = "#770000";    // dark red
-static char selbgcolor[]            = "#005577";   // dark blue
-
-/* colour palette taken from https://coolors.co/5bc0eb-fde74c-9bc53d-e55934-fa7921 */
-//static char lightblue[]             = "#5bc0eb";  /* cyan process */
-//static char lightyellow[]           = "#fde74c";  /* minion yellow */
-//static char lightgreen[]            = "#9bc53d";  /* android green */
-//static char lightred[]              = "#e55934";  /* flame */
-//static char lightorange[]           = "#fa7921";  /* pumpkin */
-//static char black[]                 = "#000000";  /* black */
 
 /* NORD Colour scheme */
 /* Polar night:   nord0..3 going from near black to a middle grey */
@@ -37,7 +23,7 @@ static char nord3[]                 = "#4c566a";
 /* Snow Storm nord4..6 going from light grey to almost white */
 static char nord4[]                 = "#d8dee9";
 static char nord5[]                 = "#e5e9f0";
-//static char nord6[]                 = "#eceff4";
+static char nord6[]                 = "#eceff4";
 /* Frost nord7..10   teal / light blue / slightly darker blue / mid blue */
 //static char nord7[]                 = "#8fbcbb";
 static char nord8[]                 = "#88c0d0";
@@ -64,19 +50,19 @@ enum {
     SchemeWhite,
     NUM_COLOR_SCHEMES,   // make sure this is never over 32 or it will clash with ASCII space!
 }; /* color schemes */
-static char *colors[][3] = {
+static const char *colors[][3] = {
        /*                   fg      bg      border   */
        [SchemeNorm]     = { nord4,  nord1,  nord2 },
        [SchemeSel]      = { nord1,  nord8,  nord12 },
        [SchemeInactive] = { nord3,  nord0,  nord1 },
 
-       [SchemeBlue]     = { nord10, nord0,  normbordercolor },
-       [SchemeRed]      = { nord11, nord0,  normbordercolor },
-       [SchemeOrange]   = { nord12, nord0,  normbordercolor },
-       [SchemeYellow]   = { nord13, nord0,  normbordercolor },
-       [SchemeGreen]    = { nord14, nord0,  normbordercolor },
-       [SchemeWhite]    = { nord5,  nord0,  normbordercolor },
-       [SchemePurple]   = { nord15, nord0,  normbordercolor },
+       [SchemeBlue]     = { nord10, nord0,  nord2 },
+       [SchemeRed]      = { nord11, nord0,  nord2 },
+       [SchemeOrange]   = { nord12, nord0,  nord2 },
+       [SchemeYellow]   = { nord13, nord0,  nord2 },
+       [SchemeGreen]    = { nord14, nord0,  nord2 },
+       [SchemeWhite]    = { nord5,  nord0,  nord2 },
+       [SchemePurple]   = { nord15, nord0,  nord2 },
 };
 
 typedef struct {
@@ -147,7 +133,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", nord0, "-nf", nord4, "-sb", nord10, "-sf", nord6, NULL };
 static const char *roficmd[] = { "rofi", "-show", "combi" };
 static const char *termcmd[]  = { "alacritty", NULL };
 
@@ -249,14 +235,12 @@ static Key keys[] = {
     { MODKEY,           XK_F2,        spawn,        SHCMD("tutorialvids") },
     { MODKEY,           XK_F3,        spawn,        SHCMD("displayselect") },
     { MODKEY,           XK_F4,        spawn,        SHCMD("alacritty -e pulsemixer; kill -44 $(pidof dwmblocks)") },
-    { MODKEY,           XK_F5,        xrdb,        {.v = NULL } },
     { MODKEY,           XK_F6,        spawn,        SHCMD("torwrap") },
     { MODKEY,           XK_F7,        spawn,        SHCMD("td-toggle") },
     { MODKEY,           XK_F8,        spawn,        SHCMD("mailsync") },
     { MODKEY,           XK_F9,        spawn,        SHCMD("dmenumount") },
     { MODKEY,           XK_F10,        spawn,        SHCMD("dmenuumount") },
     { MODKEY,           XK_F11,        spawn,        SHCMD("mpv --no-cache --no-osc --no-input-default-bindings --input-conf=/dev/null --title=webcam $(ls /dev/video[0,2,4,6,8] | tail -n 1)") },
-    { MODKEY,           XK_F12,        xrdb,        {.v = NULL } },
     { MODKEY,           XK_space,    zoom,        {0} },
     { MODKEY|ShiftMask, XK_space,    togglefloating,    {0} },
 
