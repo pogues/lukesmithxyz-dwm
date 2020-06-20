@@ -148,8 +148,11 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", nord0, "-nf", nord4, "-sb", nord10, "-sf", nord6, NULL };
-static const char *roficmd[] = { "rofi", "-show", "combi" };
-static const char *termcmd[]  = { "st", NULL };
+static const char *roficmd[] = { "rofi", "-show", "combi", NULL };
+static const char *termcmd[] = { "st", NULL };
+static const char *lockcmd[] = { "dm-tool", "lock", NULL };
+static const char *browsercmd[] = { "firefox", NULL };
+static const char *notifyclipboardcmd[] = { "notify-send", "\"📋 Clipboard contents:\"", "\"$(xclip -o -selection clipboard)\"" , NULL };
 
 #include <X11/XF86keysym.h>
 #include "shiftview.c"
@@ -179,14 +182,14 @@ static Key keys[] = {
     TAGKEYS(            XK_9,                   8)
 
     /* ; to go to the next populated tag and comma to go back*/
-    { MODKEY,           XK_semicolon,   shiftview,      { .i = 1 } },
-    { MODKEY|ShiftMask, XK_semicolon,   shifttag,       { .i = 1 } },
-    { MODKEY,           XK_comma,       shiftview,      { .i = -1 } },
-    { MODKEY|ShiftMask, XK_comma,       shifttag,       { .i = -1 } },
+    { MODKEY,           XK_semicolon,   shiftview,      {.i = 1} },
+    { MODKEY|ShiftMask, XK_semicolon,   shifttag,       {.i = 1} },
+    { MODKEY,           XK_comma,       shiftview,      {.i = -1} },
+    { MODKEY|ShiftMask, XK_comma,       shifttag,       {.i = -1} },
 
     /* the number 0 key or tab selects all tags */
-    { MODKEY,           XK_0,           view,           {.ui = ~0 } },
-    { MODKEY|ShiftMask, XK_0,           tag,            {.ui = ~0 } },
+    { MODKEY,           XK_0,           view,           {.ui = ~0} },
+    { MODKEY|ShiftMask, XK_0,           tag,            {.ui = ~0} },
     { MODKEY,           XK_Tab,         view,           {0} },
     /* a puts the selected window on every tag */
     { MODKEY,           XK_a,           togglesticky,   {0} },
@@ -198,12 +201,12 @@ static Key keys[] = {
     { MODKEY|ShiftMask, XK_q,           quit,           {.i = 0} },
 
     /* launchers */
-    { ControlMask,      XK_space,       spawn,          {.v = roficmd } },
-    { MODKEY|ShiftMask, XK_d,           spawn,          {.v = dmenucmd } },
-    { MODKEY,           XK_w,           spawn,          SHCMD("$BROWSER") },
+    { ControlMask,      XK_space,       spawn,          {.v = roficmd} },
+    { MODKEY|ShiftMask, XK_d,           spawn,          {.v = dmenucmd} },
+    { MODKEY,           XK_w,           spawn,          {.v = browsercmd} },
     { MODKEY,           XK_apostrophe,  togglescratch,  {.ui = 0} },  /* start a st shell scratch */
-    { MODKEY,           XK_r,           togglescratch,  {.ui = 1 } }, /* start a scratch ranger */
-    { MODKEY,           XK_Return,      spawn,          {.v = termcmd } },
+    { MODKEY,           XK_r,           togglescratch,  {.ui = 1} }, /* start a scratch ranger */
+    { MODKEY,           XK_Return,      spawn,          {.v = termcmd} },
 
     /* layouts */
     { MODKEY,           XK_t,           setlayout,      {.v = &layouts[0]} }, /* tile */
@@ -212,14 +215,14 @@ static Key keys[] = {
     { MODKEY,           XK_u,           setlayout,      {.v = &layouts[3]} }, /* floating */
     { MODKEY,           XK_f,           togglefullscr,  {0} },
     { MODKEY|ShiftMask, XK_f,           togglefloating, {0} },
-    { MODKEY,           XK_i,           incnmaster,     {.i = +1 } },
-    { MODKEY|ShiftMask, XK_i,           incnmaster,     {.i = -1 } },
+    { MODKEY,           XK_i,           incnmaster,     {.i = +1} },
+    { MODKEY|ShiftMask, XK_i,           incnmaster,     {.i = -1} },
 
     /* gaps */
     { MODKEY,           XK_g,           togglegaps,     {0} },
     { MODKEY|ShiftMask, XK_g,           defaultgaps,    {0} },
-    { MODKEY,           XK_z,           incrgaps,       {.i = +3 } },
-    { MODKEY,           XK_x,           incrgaps,       {.i = -3 } },
+    { MODKEY,           XK_z,           incrgaps,       {.i = +3} },
+    { MODKEY,           XK_x,           incrgaps,       {.i = -3} },
 
     /* resize the master */
     { MODKEY,           XK_h,           setmfact,       {.f = -0.05} },
@@ -229,12 +232,16 @@ static Key keys[] = {
     { MODKEY,           XK_b,           togglebar,      {0} },
 
     /*  monitor keys  - just do one direction for now */
-    { MODKEY,           XK_s,           focusmon,           {.i = -1 } },
-    { MODKEY|ShiftMask, XK_s,           tagmon,             {.i = -1 } },
-
-    { MODKEY,           XK_Insert,     spawn,           SHCMD("notify-send \"📋 Clipboard contents:\" \"$(xclip -o -selection clipboard)\"") },
+    { MODKEY,           XK_s,           focusmon,       {.i = -1} },
+    { MODKEY|ShiftMask, XK_s,           tagmon,         {.i = -1} },
 
 
+    /* show clipboard */
+    { MODKEY,           XK_c,           spawn,          {.v = notifyclipboardcmd} },
+
+    /* lock screen */
+    { MODKEY|ControlMask, XK_l,         spawn,          {.v = lockcmd} },
+    { MODKEY|ShiftMask,   XK_l,         spawn,          {.v = lockcmd} },
 };
 
 /* button definitions */
