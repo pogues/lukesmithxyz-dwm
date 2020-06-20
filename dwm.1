@@ -1,6 +1,6 @@
 .TH DWM 1 dwm\-VERSION
 .SH NAME
-dwm \- dynamic window manager (Luke Smith <https://lukesmith.xyz>'s build)
+dwm \- dynamic window manager. (based on Luke Smith <https://lukesmith.xyz>'s build)
 .SH SYNOPSIS
 .B dwm
 .RB [ \-v ]
@@ -38,8 +38,7 @@ offers.
 .TP
 .B \-v
 prints version information to standard output, then exits.
-.SH USAGE
-.SS Status bar
+.SH STATUS BAR
 .TP
 .B X root window name
 is read and displayed in the status text area. It can be set with the
@@ -48,7 +47,7 @@ command.
 .TP
 .B Left click
 click on a tag label to display all windows with that tag, click on the layout
-label toggles between tiled and floating layout.
+label toggles between layouts (tiled, deck, monicle, floating).
 .TP
 .B Right click
 click on a tag label adds/removes all windows with that tag to/from the view.
@@ -58,98 +57,184 @@ click on a tag label applies that tag to the focused window.
 .TP
 .B Super\-Right click
 click on a tag label adds/removes that tag to/from the focused window.
-.SS Keyboard commands
+.SH KEYBOARD COMMANDS
+.SS Launchers
 .TP
 .B Super\-Return
 Start terminal,
 .BR st(1).
 .TP
-.B Super\-d
+.B Control\-Space
+.BR rofi(1)
+for launching other programs
+.TP
+.B Super\-Shift\-D
 Spawn
 .BR dmenu(1)
 for launching other programs.
 .TP
-.B Super\-b
-Toggles bar on and off.
+.B Super\-w
+Spawn firefox web browser
 .TP
-.B Super\-q
-Close focused window.
+.B Super\-'
+Spawn a floating scratch shell (
+.BR st(1)
+)
 .TP
-.B Super\-t/T
-Sets tiled/bstack layouts.
-.TP
-.B Super\-f
-Toggle fullscreen window.
-.TP
-.B Super\-F
-Toggle floating layout.
-.TP
-.B Super\-y/Y
-Sets Fibonacci spiral/dwinde layouts.
-.TP
-.B Super\-u/U
-Sets centered master layout.
-.TP
-.B Super\-i/I
-Sets centered master or floating master layouts.
-.TP
-.B Super\-space
-Zooms/cycles focused window to/from master area.
-.TP
-.B Super\-j/k
-Focus next/previous window.
-.TP
-.B Super\-Shift\-j/k
-Move selected window down/up in stack.
-.TP
-.B Super\-o/O
-Increase/decrease number of windows in master area.
-.TP
-.B Super\-l
-Increase master area size.
+.B Super\-r
+Spawn a floating (
+.BR ranger(1)
+) window
+.SS Windows
 .TP
 .B Super\-h
-Decrease master area size.
+Decrease the master area size
 .TP
-.B Super\-Shift\-space
-Toggle focused window between tiled and floating state.
+.B Super\-l
+Increase the master area size
 .TP
-.B Super\-Tab
-Toggles to the previously selected tags.
+.B Super\-j/k
+Focus the next/previous window in the stack
 .TP
-.B Super\-Shift\-[1..n]
-Apply nth tag to focused window.
+.B Super\-Shift\-J/K
+Move the selected window to the next/previous position in the stack
 .TP
-.B Super\-Shift\-0
-Apply all tags to focused window.
+.B Super\-v
+Focus the first window in the stack
 .TP
-.B Super\-Control\-Shift\-[1..n]
-Add/remove nth tag to/from focused window.
+.B Super\-Shift\-V
+Move the selected window to the the first position in the stack
 .TP
-.B Super\-[1..n]
-View all windows with nth tag.
+.B Super\-Space
+Cycles the selected window to/from the master area
+.TP
+.B Super\-q
+Closes the focussed window
+.TP
+.B Super\-b
+Toggles the bar on/off.
+.SS Tags
+.TP
+.B Super\-[1..9]
+View all windows with the Nth tag
+.TP
+.B Super\-Shift\-[1..9]
+Apply the Nth tag to the selected window (removes other tags)
+.TP
+.B Super\-Control\-[0..9]
+Toggle the view for the selected tag (i.e. show that one as well)
+.TP
+.B Super\-Control\-Shift\-[0..9]
+Toggle the tag for the selected window (i.e. show the window on the clicked tag and
+the current one).
 .TP
 .B Super\-0
-View all windows with any tag.
+View all windows at once
 .TP
-.B Super\-Control\-[1..n]
-Add/remove all windows with nth tag to/from the view.
+.B Super\-Shift\-0
+Apply every tag to the selected window
 .TP
-.B Super\-Shift\-q
+.B Super\-a
+Makt the selected window sticky so it appears on all tags.  The difference to
+Super\-Shift\-0 is that the window will not have the tag so does not show as occupied
+in the tag bar
+.TP
+.B Super\-Tab
+View the last viewed tag.
+.TP
+.B Super\-;/,  (semi colon / comma)
+View all windows with the next/previous tag. (Skips empty tags)
+.TP
+.B Super\-Shift\-;/,  (semi colon / comma)
+Apply the next/previous tag to the selected window. (Skips empty tags)
+.SS Layouts
+.TP
+.TP
+.B Super\-t
+Select the master and stack layout with masters on the left 55% and a stack
+of windows on the right.  The layout icon shows []=
+.TP
+.B Super-d
+Select the deck layout with masters on the left 55% and the windows on the right
+in a deck (so only one visible at a time.  The layout icon shows D # where # is the
+nubmer of windows in the deck.
+.TP
+.B Super\-m
+Select monicle layout where the master is shown full screen (bar still showing)
+and the other windows are hidden.
+.TP
+.B Super\-u
+Select floating layout (uncontrolled!)
+.TP
+.B Super\-f
+Toggle full screen for the selected window (bar hidden)
+.TP
+.B Super\-Shift\-f
+Toggle floating for the selected window
+.TP
+.B Super\-i and Super\-Shift\-I
+Increment and decrement the number of master windows in the layout.
+.SS Gaps
+.TP
+.B Super\-g
+Toggle gaps on and off.
+.TP
+.B Super\-z
+Increase the gaps by 3 pixels
+.TP
+.B Super\-x
+Decrease the gaps by 3 pixels
+.TP
+.B Super\-Shift\-g
+Set the gaps back to the default (of 2 pixels).
+.SS Screens
+.TP
+.B Super\-s
+Focus on the next monitor
+.TP
+.B Super\-Shift\-S
+Move the selected window to the next monitor
+.SS Misc
+.TP
+.B Super\-c
+Show the clipboard contents in a notify window.
+.TP
+.B Super\-Shift\-Q
 Quit dwm.
 .TP
-.B Mod1\-Control\-Shift\-q
-Menu to refresh/quit/reboot/shutdown.
-.SS Mouse commands
+.B Super\-Shift\-Backspace
+Restart dwm.  Windows are not closed but lose their tag information.
+.TP
+.B Super\-Shift\-L and Super\-Control\-l
+Locks the screen (with the dm-tool lock command)
+.SH MOUSE COMMANDS
 .TP
 .B Super\-Left click
-Move focused window while dragging. Tiled windows will be toggled to the floating state.
+Move focused window while dragging. Tiled windows will be set to the floating state.
 .TP
 .B Super\-Middle click
 Toggles focused window between floating and tiled state.
 .TP
 .B Super\-Right click
 Resize focused window while dragging. Tiled windows will be toggled to the floating state.
+.TP
+.B Left click on tag number
+Selects the tag (same as Super\-#)
+.TP
+.B Super\-Left click on tag number
+Assign the tag to the selected window (same as Super\-Shift\-#)
+.TP
+.B Right click on the tag number
+Toggle the view for the selected tag (i.e. show that tag as well).  Same as
+Super\-Control\-#.
+.TP
+.B Super\-Right click on the tag number
+Toggle the tag for the selected window (same as Super\-Shift\-Control\-#)
+.B Left click on the layout symbol
+Cycle through layouts
+.TP
+.B Left click on the window title
+Cycle through windows (same as Super\-j)
 .SH CUSTOMIZATION
 dwm is customized by creating a custom config.h and (re)compiling the source
 code. This keeps it fast, secure and simple.
