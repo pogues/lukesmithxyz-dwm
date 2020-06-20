@@ -193,6 +193,7 @@ static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
 static void copyvalidchars(char *text, char *rawtext, int includecolorcodes);
 static Monitor *createmon(void);
+static void cyclelayout(const Arg *arg);
 static void destroynotify(XEvent *e);
 static void detach(Client *c);
 static void detachstack(Client *c);
@@ -779,6 +780,25 @@ createmon(void)
 }
 
 void
+cyclelayout(const Arg *arg)
+{
+    Layout *l;
+    for(l = (Layout *)layouts; l != selmon->lt[selmon->sellt]; l++)
+        ;
+    if (arg->i > 0) {
+        if(l->symbol && (l + 1)->symbol)
+            setlayout(&((Arg) { .v = (l + 1) }));
+        else
+            setlayout(&((Arg) { .v = layouts }));
+    } else {
+        if(l != layouts && (l - 1)->symbol)
+            setlayout(&((Arg) { .v = (l - 1) }));
+        else
+        setlayout(&((Arg) { .v = &layouts[LENGTH(layouts) - 2] }));
+    }
+}
+
+void
 destroynotify(XEvent *e)
 {
     Client *c;
@@ -886,9 +906,9 @@ drawbar(Monitor *m)
 
     if ((w = m->ww - sw - x) > bh) {
         if (m->sel) {
-			int mid = (m->ww - TEXTW(m->sel->name)) / 2 - x;
-			/* make sure name will not overlap on tags even when it is very long */
-			mid = mid >= lrpad / 2 ? mid : lrpad / 2;
+            int mid = (m->ww - TEXTW(m->sel->name)) / 2 - x;
+            /* make sure name will not overlap on tags even when it is very long */
+            mid = mid >= lrpad / 2 ? mid : lrpad / 2;
             drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
             drw_text(drw, x, 0, w, bh, mid, m->sel->name, 0);
             if (m->sel->isfloating)

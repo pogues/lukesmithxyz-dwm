@@ -163,7 +163,7 @@ static Key keys[] = {
 
     /* move the selected window to the master */
     { MODKEY,           XK_space,      zoom,            {0} },
-    
+
     /* selecting tags */
 
     /* Number keys move to tag, shift-# moves screen to tag,
@@ -199,21 +199,21 @@ static Key keys[] = {
 
     /* launchers */
     { ControlMask,      XK_space,       spawn,          {.v = roficmd } },
-    { MODKEY,           XK_d,           spawn,          {.v = dmenucmd } },
+    { MODKEY|ShiftMask, XK_d,           spawn,          {.v = dmenucmd } },
     { MODKEY,           XK_w,           spawn,          SHCMD("$BROWSER") },
     { MODKEY,           XK_apostrophe,  togglescratch,  {.ui = 0} },  /* start a st shell scratch */
     { MODKEY,           XK_r,           togglescratch,  {.ui = 1 } }, /* start a scratch ranger */
     { MODKEY,           XK_Return,      spawn,          {.v = termcmd } },
 
     /* layouts */
-    { MODKEY,           XK_u,           setlayout,      {.v = &layouts[0]} }, /* tile */
-    { MODKEY,           XK_i,           setlayout,      {.v = &layouts[1]} }, /* deck */
-    { MODKEY,           XK_o,           setlayout,      {.v = &layouts[2]} }, /* monicle */
-    { MODKEY,           XK_p,           setlayout,      {.v = &layouts[3]} }, /* floating */
+    { MODKEY,           XK_t,           setlayout,      {.v = &layouts[0]} }, /* tile */
+    { MODKEY,           XK_d,           setlayout,      {.v = &layouts[1]} }, /* deck */
+    { MODKEY,           XK_m,           setlayout,      {.v = &layouts[2]} }, /* monicle */
+    { MODKEY,           XK_u,           setlayout,      {.v = &layouts[3]} }, /* floating */
     { MODKEY,           XK_f,           togglefullscr,  {0} },
     { MODKEY|ShiftMask, XK_f,           togglefloating, {0} },
-    { MODKEY,           XK_m,           incnmaster,     {.i = +1 } },
-    { MODKEY|ShiftMask, XK_m,           incnmaster,     {.i = -1 } },
+    { MODKEY,           XK_i,           incnmaster,     {.i = +1 } },
+    { MODKEY|ShiftMask, XK_i,           incnmaster,     {.i = -1 } },
 
     /* gaps */
     { MODKEY,           XK_g,           togglegaps,     {0} },
@@ -228,9 +228,9 @@ static Key keys[] = {
     /* toggle the bar at the top */
     { MODKEY,           XK_b,           togglebar,      {0} },
 
-    /*  monitor keys  - only have 2 so rotate in one direction */
-    { MODKEY,           XK_s,       focusmon,           {.i = -1 } },
-    { MODKEY|ShiftMask, XK_s,       tagmon,             {.i = -1 } },
+    /*  monitor keys  - just do one direction for now */
+    { MODKEY,           XK_s,           focusmon,           {.i = -1 } },
+    { MODKEY|ShiftMask, XK_s,           tagmon,             {.i = -1 } },
 
     { MODKEY,           XK_Insert,     spawn,           SHCMD("notify-send \"📋 Clipboard contents:\" \"$(xclip -o -selection clipboard)\"") },
 
@@ -241,14 +241,7 @@ static Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
     /* click                event mask      button          function        argument */
-  /*{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-    { ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} },
-    { ClkStatusText,        0,              Button2,        sigdwmblocks,   {.i = 2} },
-    { ClkStatusText,        0,              Button3,        sigdwmblocks,   {.i = 3} },
-    { ClkStatusText,        0,              Button4,        sigdwmblocks,   {.i = 4} },
-    { ClkStatusText,        0,              Button5,        sigdwmblocks,   {.i = 5} },
-    { ClkStatusText,        ShiftMask,      Button1,        sigdwmblocks,   {.i = 6} },
-    { ClkStatusText,        ShiftMask,      Button3,        spawn,          SHCMD("st -e nvim ~/.local/src/dwmblocks/config.h") }, */
+    { ClkWinTitle,          0,              Button1,        focusstack,     {.i = INC(+1) } },
     { ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
     { ClkClientWin,         MODKEY,         Button2,        defaultgaps,    {0} },
     { ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
@@ -258,8 +251,6 @@ static Button buttons[] = {
     { ClkTagBar,            0,              Button3,        toggleview,     {0} },
     { ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
     { ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
-    { ClkTagBar,            0,              Button4,        shiftview,      {.i = -1} },
-    { ClkTagBar,            0,              Button5,        shiftview,      {.i = 1} },
-/*    { ClkLtSymbol,          0,              Button1,        cyclelayout,    {.i = 1} }, */
+    { ClkLtSymbol,          0,              Button1,        cyclelayout,    {.i = 1} },
     { ClkRootWin,           0,              Button2,        togglebar,      {0} },
 };
