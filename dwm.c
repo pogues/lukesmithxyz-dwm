@@ -1576,10 +1576,22 @@ run(void)
             handler[ev.type](&ev); /* call handler */
 }
 
+
+/* should we run picom; do so if DWM_RUN_PICOM is 1 */
+unsigned int
+run_picom(void) 
+{
+    char *picom = getenv("DWM_RUN_PICOM");
+    if (picom != NULL && *picom == '1')
+        return 1;
+    return 0;
+}
+
 void
 runAutostart(void) {
     system("killall -q dwmblocks; dwmblocks &");
-    system("killall -q picom; picom &");
+    if (run_picom()) 
+        system("killall -q picom; picom &");
     system("~/.fehbg &");
 }
 
