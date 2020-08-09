@@ -73,14 +73,17 @@ static const char *colors[][3] = {
 typedef struct {
     const char *name;
     const void *cmd;
-} Sp;
+} ScratchPads;
 
+/* use st here as that is working - need to check for alacritty */
 const char *sptermcmd[] = {"st", "-n", "spterm", "-g", "140x54", NULL };
 const char *sprangercmd[] = {"st", "-n", "spranger", "-g", "140x54", "-e", "ranger", NULL };
-static Sp scratchpads[] = {
+const char *spalacrittycmd[] = {"alacritty", "-t", "spalacritty", NULL };
+static ScratchPads scratchpads[] = {
     /* name          cmd  */
-    {"spterm",      sptermcmd},
+    {"spalacritty", spalacrittycmd},
     {"spranger",    sprangercmd},
+    {"spterm",      sptermcmd},
 };
 
 /* tagging */
@@ -92,11 +95,12 @@ static const Rule rules[] = {
      *    WM_NAME(STRING) = title
     */
     /* class    instance      title            tags mask    isfloating   isterminal  noswallow  monitor */
-    { "Gimp",     NULL,       NULL,               1 << 8,       0,           0,         0,        -1 },
-    { "St",       NULL,       NULL,               0,            0,           1,         0,        -1 },
-    { NULL,       NULL,       "Event Tester",     0,            0,           0,         1,        -1 },
-    { NULL,      "spterm",    NULL,               SPTAG(0),     1,           1,         0,        -1 },
-    { NULL,      "spranger",  NULL,               SPTAG(1),     1,           1,         0,        -1 },
+    { "Gimp",        NULL,       NULL,               1 << 8,       0,           0,         0,        -1 },
+    { "st-256color", NULL,       NULL,               0,            0,           1,         0,        -1 },
+    { NULL,          NULL,       "spalacritty",      SPTAG(2),     0,           1,         0,        -1 },
+    { NULL,          NULL,       "Event Tester",     0,            0,           0,         1,        -1 },
+    { NULL,         "spterm",    NULL,               SPTAG(0),     1,           1,         0,        -1 },
+    { NULL,         "spranger",  NULL,               SPTAG(1),     1,           1,         0,        -1 },
 };
 
 /* layout(s) */
@@ -149,7 +153,7 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", nord0, "-nf", nord4, "-sb", nord10, "-sf", nord6, NULL };
 static const char *roficmd[] = { "rofi", "-show", "combi", NULL };
-static const char *termcmd[] = { "st", NULL };
+static const char *termcmd[] = { "alacritty", NULL };
 static const char *lockcmd[] = { "dm-tool", "lock", NULL };
 static const char *browsercmd[] = { "firefox", NULL };
 static const char *notifyclipboardcmd[] = { "notify-send", "\"📋 Clipboard contents:\"", "\"$(xclip -o -selection clipboard)\"" , NULL };
