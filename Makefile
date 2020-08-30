@@ -3,6 +3,11 @@
 
 include config.mk
 
+ifneq (,$(wildcard /sys/class/power_supply/BAT1))
+	# have a laptop as the battery is present
+	CFLAGS += -DSMALL_SCREEN
+endif
+
 SRC = drw.c dwm.c util.c
 OBJ = ${SRC:.c=.o}
 

@@ -1,5 +1,15 @@
 /* See LICENSE file for copyright and license details. */
 
+/* some setup for different systems */
+#ifdef SMALL_SCREEN
+    static const char *fonts[]          = { "monospace:size=10" };
+    static char dmenufont[]             = "monospace:size=10";
+#else
+    #define CENTER_WINDOW_TITLE 
+    static const char *fonts[]          = { "monospace:size=14" };
+    static char dmenufont[]             = "monospace:size=14";
+#endif
+
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -11,8 +21,6 @@ static const int swallowfloating    = 0;        /* 2 means swallow floating wind
 static const int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=14" };
-static char dmenufont[]             = "monospace:size=14";
 
 /* NORD Colour scheme */
 /* Polar night:   nord0..3 going from near black to a middle grey */
