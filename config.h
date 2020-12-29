@@ -78,6 +78,14 @@ static const char *colors[][3] = {
        [SchemeLayout]   = { nord7,  black, nord9 },
 };
 
+
+/* items to autostart */
+static const char *const autostart[] = {
+    "lxsession", NULL,
+    "nextcloud", NULL,
+    NULL,  /* terminate */
+};
+
 typedef struct {
     const char *name;
     const void *cmd;
@@ -104,7 +112,7 @@ static const Rule rules[] = {
     */
     /* class      instance      title            tags mask    isfloating   isterminal  noswallow  monitor */
     { "Gimp",        NULL,       NULL,               1 << 8,       0,           0,         0,        -1 },
-    { "Thunderbird", NULL,       NULL,               1 << 2,       0,           0,         0,        -1 },
+    { "Thunderbird", NULL,       NULL,               1 << 1,       0,           0,         0,        -1 },
     { "st-256color", NULL,       NULL,               0,            0,           1,         0,        -1 },
     { NULL,          NULL,       "spalacritty",      SPTAG(2),     0,           1,         0,        -1 },
     { NULL,          NULL,       "Event Tester",     0,            0,           0,         1,        -1 },
