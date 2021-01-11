@@ -6,8 +6,8 @@
     static char dmenufont[]             = "monospace:size=10";
 #else
     #define CENTER_WINDOW_TITLE 
-    static const char *fonts[]          = { "monospace:size=14" };
-    static char dmenufont[]             = "monospace:size=14";
+    static const char *fonts[]          = { "monospace:size=12" };
+    static char dmenufont[]             = "monospace:size=12";
 #endif
 
 /* appearance */
@@ -81,8 +81,7 @@ static const char *colors[][3] = {
 
 /* items to autostart */
 static const char *const autostart[] = {
-    "lxsession", NULL,
-    "nextcloud", NULL,
+    "lxsession", NULL,   // note lxsession starts everything in ~/.config/autostart
     NULL,  /* terminate */
 };
 
