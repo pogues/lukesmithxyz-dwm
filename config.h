@@ -10,6 +10,9 @@
     static char dmenufont[]             = "monospace:size=12";
 #endif
 
+// location of helper scripts
+#define SCRIPT_DIR "~/.config/dwm/bar/"
+
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -140,6 +143,7 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod4Mask
+#define ALTMODKEY Mod1Mask
 /* these are standard keys for selecting/moving to tags */
 #define TAGKEYS(KEY, TAG) \
     { MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
@@ -173,6 +177,11 @@ static const char *termcmd[] = { "alacritty", NULL };
 static const char *lockcmd[] = { "dm-tool", "lock", NULL };
 static const char *browsercmd[] = { "firefox", NULL };
 static const char *notifyclipboardcmd[] = { "notify-send", "\"📋 Clipboard contents:\"", "\"$(xclip -o -selection clipboard)\"" , NULL };
+/* volume commands */
+static const char *volumeUpCmd[] = { "/bin/sh", "-c", SCRIPT_DIR "vol_up", NULL };
+static const char *volumeDownCmd[] = { "/bin/sh", "-c", SCRIPT_DIR "vol_down", NULL };
+static const char *volumeMuteCmd[] = { "/bin/sh", "-c", SCRIPT_DIR "mute", NULL };
+
 
 #include <X11/XF86keysym.h>
 #include "shiftview.c"
@@ -262,6 +271,11 @@ static Key keys[] = {
     /* lock screen */
     { MODKEY|ControlMask, XK_l,         spawn,          {.v = lockcmd} },
     { MODKEY|ShiftMask,   XK_l,         spawn,          {.v = lockcmd} },
+
+    /* volume up / down */
+    {0,                   XF86XK_AudioRaiseVolume,  spawn,  {.v = volumeUpCmd} },
+    {0,                   XF86XK_AudioLowerVolume,  spawn,  {.v = volumeDownCmd} },
+    {0,                   XF86XK_AudioMute,         spawn,  {.v = volumeMuteCmd} },
 };
 
 /* button definitions */
