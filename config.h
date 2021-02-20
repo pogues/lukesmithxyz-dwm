@@ -95,12 +95,8 @@ typedef struct {
 
 /* use st here as that is working - need to check for alacritty */
 const char *sptermcmd[] = {"st", "-n", "spterm", "-g", "140x54", NULL };
-const char *sprangercmd[] = {"st", "-n", "spranger", "-g", "140x54", "-e", "ranger", NULL };
-const char *spalacrittycmd[] = {"alacritty", "-t", "spalacritty", NULL };
 static ScratchPads scratchpads[] = {
     /* name          cmd  */
-    {"spalacritty", spalacrittycmd},
-    {"spranger",    sprangercmd},
     {"spterm",      sptermcmd},
 };
 
@@ -113,13 +109,11 @@ static const Rule rules[] = {
      *    WM_NAME(STRING) = title
     */
     /* class      instance      title            tags mask    isfloating   isterminal  noswallow  monitor */
-    { "Gimp",        NULL,       NULL,               1 << 8,       0,           0,         0,        -1 },
-    { "Thunderbird", NULL,       NULL,               1 << 1,       0,           0,         0,        -1 },
-    { "st-256color", NULL,       NULL,               0,            0,           1,         0,        -1 },
-    { NULL,          NULL,       "spalacritty",      SPTAG(2),     0,           1,         0,        -1 },
-    { NULL,          NULL,       "Event Tester",     0,            0,           0,         1,        -1 },
-    { NULL,         "spterm",    NULL,               SPTAG(0),     1,           1,         0,        -1 },
-    { NULL,         "spranger",  NULL,               SPTAG(1),     1,           1,         0,        -1 },
+    { "Thunderbird", NULL,          NULL,           1 << 1,       0,           0,         0,        -1 }, // mail on 2 (@)
+    { "st-256color", NULL,          NULL,           0,            0,           1,         0,        -1 }, // swallow st
+    { "Alacritty",   NULL,          NULL,           0,            0,           1,         0,        -1 }, // swallow alacritty
+    { NULL,          NULL,          "Event Tester", 0,            0,           0,         1,        -1 },
+    { NULL,         "spterm",       NULL,           SPTAG(1),     1,           1,         0,        -1 },
 };
 
 /* layout(s) */
@@ -233,8 +227,7 @@ static Key keys[] = {
     { ControlMask,      XK_space,       spawn,          {.v = roficmd} },
     { MODKEY|ShiftMask, XK_d,           spawn,          {.v = dmenucmd} },
     { MODKEY,           XK_w,           spawn,          {.v = browsercmd} },
-    { MODKEY,           XK_apostrophe,  togglescratch,  {.ui = 0} },  /* start a st shell scratch */
-    { MODKEY,           XK_r,           togglescratch,  {.ui = 1} }, /* start a scratch ranger */
+    { MODKEY,           XK_r,           togglescratch,  {.ui = 1} },  /* start a st shell scratch */
     { MODKEY,           XK_Return,      spawn,          {.v = termcmd} },
 
     /* layouts */
