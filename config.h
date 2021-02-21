@@ -2,8 +2,8 @@
 
 /* some setup for different systems */
 #ifdef SMALL_SCREEN
-    static const char *fonts[]          = { "monospace:size=10" };
-    static char dmenufont[]             = "monospace:size=10";
+    static const char *fonts[]          = { "monospace:size=16" };
+    static char dmenufont[]             = "monospace:size=16";
 #else
     #define CENTER_WINDOW_TITLE 
     static const char *fonts[]          = { "monospace:size=12" };
